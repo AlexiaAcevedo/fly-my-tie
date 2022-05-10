@@ -74,27 +74,30 @@ class Post:
         if len(results) < 1:
             return None
         else:
-            one_painting = cls(results[0])
+            one_post = cls(results[0])
             this_user_dictionary = {
                 "id": results[0]['users.id'],
                 "first_name": results[0]['first_name'],
                 "last_name": results[0]['last_name'],
+                "username": results[0]['username'],
                 "email": results[0]['email'],
                 "password": results[0]['password'],
+                "profile_photo_url": results[0]['profile_photo_url'],
+                "bio": results[0]['bio'],
                 "created_at": results[0]['users.created_at'],
                 "updated_at": results[0]['users.updated_at']
             }
-            painting_creator = user.User(this_user_dictionary)
-            one_painting.user = painting_creator
-            return one_painting
+            post_creator = user.User(this_user_dictionary)
+            one_post.user = post_creator
+            return one_post
 
 
     @classmethod
-    def get_user_paintings(cls, data):
-        query = "SELECT * FROM users LEFT JOIN paintings ON users.id = paintings.user_id;"
-        results = connectToMySQL('paintings').query_db(query,data)
-        paintings = []
-        for painting in results:
-            paintings.append( cls(painting) )
-        return paintings
+    def get_user_posts(cls, data):
+        query = "SELECT * FROM users LEFT JOIN posts ON users.id = posts.user_id WHERE users.id = %(id)s;"
+        results = connectToMySQL('tie_my_fly').query_db(query,data)
+        posts = []
+        for post in results:
+            posts.append( cls(post) )
+        return posts
     

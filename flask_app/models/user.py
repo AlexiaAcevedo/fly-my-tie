@@ -27,6 +27,7 @@ class User:
 
     @classmethod
     def save_user_cont(cls, data):
+        #would need to incorporate user who's logged in ID or just use an update query???
         query = 'INSERT INTO users ( profile_photo_url, bio ) VALUES ( %(profile_photo_url)s, %(bio)s );'
         results = connectToMySQL('tie_my_fly').query_db(query, data)
         return results
