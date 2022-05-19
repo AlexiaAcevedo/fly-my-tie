@@ -24,7 +24,7 @@ class Post:
 
     @classmethod
     def save_post(cls, data):
-        query = 'INSERT INTO posts ( image_url, fly_name, pattern_type, difficulty, hook, bead, thread, fins, tail, belly, body, instructions, user_id, created_at, updated at) VALUES ( %(image_url)s, %(fly_name)s, %(pattern_type)s, %(difficulty)s, %(hook)s, %(bead)s, %(thread)s, %(fins)s, %(tail)s, %(belly)s, %(body)s, %(instructions)s, %(user_id)s, NOW(), NOW() );'
+        query = 'INSERT INTO posts ( image_url, fly_name, pattern_type, difficulty, hook, bead, thread, fins, tail, belly, body, instructions, user_id, created_at, updated_at) VALUES ( %(image_url)s, %(fly_name)s, %(pattern_type)s, %(difficulty)s, %(hook)s, %(bead)s, %(thread)s, %(fins)s, %(tail)s, %(belly)s, %(body)s, %(instructions)s, %(user_id)s, NOW(), NOW() );'
         results = connectToMySQL('tie_my_fly').query_db(query, data)
         return results
 
@@ -67,6 +67,11 @@ class Post:
                 all_posts.append(this_post_instance)
             return all_posts
 
+    # @classmethod
+    # def get_all_posts_of_one_user(cls,data):
+    #     query = 'SELECT * FROM posts WHERE posts.user_id = %(id)s;'
+
+
     @classmethod
     def get_one_post_with_user(cls, data):
         query = 'SELECT * FROM posts JOIN users ON users.id = posts.user_id WHERE posts.id = %(id)s;'
@@ -91,13 +96,37 @@ class Post:
             one_post.user = post_creator
             return one_post
 
-
-    @classmethod
-    def get_user_posts(cls, data):
-        query = "SELECT * FROM users LEFT JOIN posts ON users.id = posts.user_id WHERE users.id = %(id)s;"
-        results = connectToMySQL('tie_my_fly').query_db(query,data)
-        posts = []
-        for post in results:
-            posts.append( cls(post) )
-        return posts
-    
+    @staticmethod
+    def validate_post(post):
+        is_valid = True
+        if len(post['image_url']) < 5:
+            flash('Image URL invalid', 'post')
+            is_valid = False
+        if len(post['fly_name']) < 3:
+            flash('Fly name should be at least 3 characters long', 'post')
+            is_valid = False 
+        if len(post['hook']) < 3:
+            flash('Hook should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['bead']) < 3:
+            flash('Bead should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['thread']) < 3:
+            flash('Thread should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['fins']) < 3:
+            flash('Fins should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['tail']) < 3:
+            flash('Tail should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['belly']) < 3:
+            flash('Belly should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['body']) < 3:
+            flash('Body should be at least 5 characters long', 'post')
+            is_valid = False
+        if len(post['instructions']) < 30:
+            flash('Instructions should be at least 30 characters long', 'post')
+            is_valid = False
+        return is_valid

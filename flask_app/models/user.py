@@ -21,20 +21,19 @@ class User:
 
     @classmethod
     def save_user_initial(cls, data):
-        query = 'INSERT INTO users ( first_name, last_name, username, email, password, created_at, updated_at ) VALUES ( %(first_name)s, %(last_name)s, %(username)s, %(email)s, %(password)s, NOW(), NOW() );'
+        query = 'INSERT INTO users ( profile_photo_url, first_name, last_name, username, email, password, created_at, updated_at ) VALUES ( %(profile_photo_url)s, %(first_name)s, %(last_name)s, %(username)s, %(email)s, %(password)s, NOW(), NOW() );'
         results = connectToMySQL('tie_my_fly').query_db(query, data)
         return results
 
-    @classmethod
-    def save_user_cont(cls, data):
-        #would need to incorporate user who's logged in ID or just use an update query???
-        query = 'INSERT INTO users ( profile_photo_url, bio ) VALUES ( %(profile_photo_url)s, %(bio)s );'
-        results = connectToMySQL('tie_my_fly').query_db(query, data)
-        return results
+    # @classmethod
+    # def save_user_cont(cls, data):
+    #     query = 'UPDATE users SET profile_photo_url = %(profile_photo_url)s, bio = %(bio)s WHERE id = %(id)s;'
+    #     results = connectToMySQL('tie_my_fly').query_db(query, data)
+    #     return results
     
     @classmethod
     def update_user(cls, data):
-        query = 'UPDATE users SET profile_photo_url = %(profile_photo_url)s, first_name = %(first_name)s, last_name = %(last_name)s, bio = %(bio)s WHERE id = %(id)s;'
+        query = 'UPDATE users SET profile_photo_url = %(profile_photo_url)s, bio = %(bio)s WHERE id = %(id)s;'
         results = connectToMySQL('tie_my_fly').query_db(query, data)
         return results
 
@@ -64,7 +63,40 @@ class User:
     def get_by_id(cls, data):
         query = 'SELECT * FROM users WHERE id = %(id)s;'
         results = connectToMySQL('tie_my_fly').query_db(query, data)
+        print(cls(results[0]))
         return cls(results[0])
+
+    @classmethod
+    def get_all_posts_of_one_user(cls, data):
+        query = "SELECT * FROM users LEFT JOIN posts ON users.id = posts.user_id WHERE users.id = %(id)s;"
+        results = connectToMySQL('tie_my_fly').query_db(query,data)
+        if len(results) < 1:
+            return None
+        else:
+            this_user = cls(results[0])
+            for this_row in results:
+                this_post_dictionary = {
+                    "id": this_row['posts.id'],
+                    "image_url": this_row['image_url'],
+                    "fly_name": this_row['fly_name'],
+                    "pattern_type": this_row['pattern_type'],
+                    "difficulty": this_row['difficulty'],
+                    "hook": this_row['hook'],
+                    "bead": this_row['bead'],
+                    "thread": this_row['thread'],
+                    "fins": this_row['fins'],
+                    "tail": this_row['tail'],
+                    "belly": this_row['belly'],
+                    "body": this_row['body'],
+                    "instructions": this_row['instructions'],
+                    "user_id": this_row['user_id'],
+                    "created_at": this_row['created_at'],
+                    "updated_at": this_row['updated_at']
+                }
+                this_post_instance = post.Post(this_post_dictionary)
+                this_user.posts.append(this_post_instance)
+            return this_user
+
 
     @staticmethod
     def validate_user(user):
@@ -100,4 +132,14 @@ class User:
         if user['password'] != user['confirm']:
             flash('Passwords did not match.', 'register')
             is_valid = False
+        return is_valid
+
+    @staticmethod
+    def validate_edit_user(user):
+        is_valid = True
+        if len(user['bio']) > 151:
+            flash('Bio has a 150 character limit', 'edit_user')
+            is_valid = False
+        if len(user['profile_photo_url']) < 6:
+            flash('Invalid profile avatar URL', 'edit_user')
         return is_valid

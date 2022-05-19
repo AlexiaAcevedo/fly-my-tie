@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/read.css') }}">
+        <title>Tie My Fly - Create Post</title>
+    </head>
+    <body>
+        <div id="page-container">
+            <nav class="navbar navbar-dark bg-dark">
+                <div class="container-fluid page-width">
+                    <a class="navbar-brand" href="/home">
+                            Tie My Fly
+                        <img src="{{ url_for('static', filename='imgs/fly-icon2.png') }}"  width="30" height="24" class="d-inline-block align-text-top">
+                    </a>
+                    <div id="nav-icons">
+                        <a href="/home"><img src="{{ url_for('static', filename='imgs/fly-home.png') }}" alt="home"></a>
+                        <a href="/create/post"><img src="{{ url_for('static', filename='imgs/create.png') }}" alt="create post"></a>
+                        <a href="/profile/{{ user.id }}"><img src="{{ user.profile_photo_url }}" style="border-radius: 50%; border: solid black 1px;"></a>
+                        <a href="/logout"><button class="btn-logout">Logout</button></a>
+                    </div>
+                </div>
+            </nav>
+            <div id="content-container">
+                <div class="content">
+                    <div class="post-info">
+                        <div class="post-img">
+                            <img src="{{ post.image_url }}" alt="{{ post.fly_name }}">
+                        </div>
+                        <div class="post-details">
+                            <h3><img src="{{ post.user.profile_photo_url }}"> {{ post.user.username }} </h3>
+                            <h3>Fly Name:<p>{{ post.fly_name }}</p></h3>
+                            <h3>Pattern Type:<p>{{ post.pattern_type }}</p></h3>
+                            <h3>Difficulty:<p>{{ post.difficulty }}</p></h3>
+                        </div>
+                        <div class="post-tools">
+                            {% if post.user_id == session.user_id %}
+                                <a href="/edit/post/{{ post.id }}"><img src="{{ url_for('static', filename='imgs/edit.png') }}" alt="edit"></a>
+                                <a href="/delete/{{ post.id }}"><img src="{{ url_for('static', filename='imgs/delete-icon.png') }}" alt="delete"></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="post-materials">
+                        <h3>Materials</h3>
+                        <p>Hook: {{ post.hook }}</p>
+                        <p>Bead: {{ post.bead }}</p>
+                        <p>Thread: {{ post.thread }}</p>
+                        <p>Fins: {{ post.fins }}</p>
+                        <p>Tail: {{ post.tail }}</p>
+                        <p>Belly: {{ post.belly }}</p>
+                        <p>Body: {{ post.body }}</p>
+                    </div>
+                    <div class="post-instr">
+                        <h3>Instructions</h3>
+                        <p>{{ post.instructions }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

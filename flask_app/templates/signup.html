@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=\, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
+        <title>Tie My Fly - Sign Up</title>
+    </head>
+    <body>
+        <div class="container">
+            <img src="static/imgs/fly-icon2.png" alt="fly icon" class="logo-icon">
+            <h3>Create Tie My Fly account</h3>
+            <form action="/signup/user" method="post">
+                {% with messages = get_flashed_messages(category_filter = ['register']) %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{message}}</p>                     
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="txt-field">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" name="first_name" maxlength="45">
+                </div>
+                <div class="txt-field">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" maxlength="45">
+                </div>
+                <div class="txt-field">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" maxlength="45">
+                </div>
+                <div class="txt-field">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" maxlength="255">
+                </div>
+                <div class="txt-field">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password">
+                </div>
+                <div class="txt-field">
+                    <label for="confirm">Confirm Password:</label>
+                    <input type="password" name="confirm">
+                </div>
+                <input type="submit" value="Sign up">
+                <div class="signup-link">
+                    <p>Already have an account? <a href="/login">Log in</a></p>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

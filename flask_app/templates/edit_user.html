@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_user.css') }}">
+        <title>Tie My Fly - Account Setup</title>
+    </head>
+    <body>
+        <div id="page-container">
+            <nav class="navbar navbar-dark bg-dark">
+                <div class="container-fluid page-width">
+                    <a class="navbar-brand" href="/home">
+                            Tie My Fly
+                        <img src="{{ url_for('static', filename='imgs/fly-icon2.png') }}"  width="30" height="24" class="d-inline-block align-text-top">
+                    </a>
+                    <div id="nav-icons">
+                        <a href="/home"><img src="{{ url_for('static', filename='imgs/fly-home.png') }}" alt="home"></a>
+                        <a href="/create/post"><img src="{{ url_for('static', filename='imgs/create.png') }}" alt="create post"></a>
+                        <a href="/profile/{{ user.id }}"><img src="{{ user.profile_photo_url }}" style="border-radius: 50%; border: solid black 1px;"></a>
+                        <a href="/logout"><button class="btn-logout">Logout</button></a>
+                    </div>
+                </div>
+            </nav>
+            <div id="content-container">
+                <div class="content">
+                    {% with messages = get_flashed_messages(category_filter = ['edit_user']) %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{message}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                    <form action="/edit/profile" method="post">
+                        <div class="txt-field">
+                            <label for="profile_photo_url">Profile Avatar URL:</label>
+                            <input type="text" name="profile_photo_url" maxlength="255" placeholder="{{ user.profile_photo_url }}">
+                        </div>
+                        <div class="txt-field-bio">
+                            <label for="bio">Bio:</label>
+                            <textarea name="bio" cols="50" rows="10" maxlength="150">{{ user.bio }}</textarea>
+                        </div>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=\, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login_signup_style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>Tie My Fly</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=\, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login_signup.css') }}">
+        <title>Tie My Fly</title>
+    </head>
     <body>
-        <div class="container">
-            <div class="image">
-                <img src="flask_app/static/imgs/fly_fishing_login.jpg" alt="flyfisherman">
+        <div class="container-fluid">
+            <div class="img">
+                <img src="static/imgs/fly_fishing_login.jpg" alt="fly fisherman" class="image">
             </div>
             <div class="content">
-                <img src="flask_app/static/imgs/fly-icon2.png" alt="fly icon">
+                <img src="static/imgs/fly-icon2.png" alt="fly icon" class="logo-icon">
                 <h1>All the flies you've ever dreamed of</h1>
                 <h3>Join Tie My Fly today.</h3>
                 <div class="button">
-                    <a href=""><button>Sign up</button></a>
-                    <a href=""><button>Log in</button></a>
+                    <a href="/signup"><button class="btn btn-signup">Sign up</button></a>
+                    <a href="/login"><button class="btn btn-login">Log in</button></a>
                 </div>
             </div>
         </div>

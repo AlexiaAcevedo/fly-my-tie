@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    display:flex;
+    height: 100vh;
+}
+
+.image, .img {
+    height: 100vh;
+    flex: 2;
+    display: flex;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    width: 20vw;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding: 2rem;
+}
+
+.logo-icon {
+    width: 4rem;
+}
+
+h1, h3 {
+    color: #0f1419;
+    font-weight: 900;
+}
+
+h1 {
+    font-size: 1.5vw;
+}
+
+h3 {
+    font-size: 1rem;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24rem;
+    height: 3.3rem;
+    border-radius: 10vw;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.btn-signup {
+    background: #0f1419;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.btn-signup:hover {
+    background: gray;
+}
+
+.btn-login {
+    border: 1px solid #0f1419;
+    color: #0f1419;
+}
+
+a {
+    text-decoration: none;
+}

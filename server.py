@@ -1,5 +1,5 @@
 from flask_app import app
-#from flask_app.controllers import XXXX
+from flask_app.controllers import users_and_posts
 
 if __name__ == '__main__':
     app.run(debug=True)
