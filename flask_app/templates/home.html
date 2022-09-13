@@ -42,11 +42,18 @@
                         </div>
                         <div class="card-footer">
                             <a href="/profile/{{ this_post.user.id }}"><img src="{{ this_post.user.profile_photo_url }}" alt="{{ this_post.user.username }}">{{ this_post.user.username }}</a>
+                            <!-- <form action="//post/{{ this_post.id }}/favorite" method="post"> -->
+                                <button><img src="{{ url_for('static', filename='imgs/like-icon-black.png') }}" alt="" onclick="favorite(this)"></button>
+                            <!-- </form> -->
+                            <!-- <form action="//post/{{ this_post.id }}/unfavorite" method="post">
+                                <button><img src="{{ url_for('static', filename='imgs/like-icon.png') }}" alt="" onclick="unfavorite(this)"></button>
+                            </form> -->
                         </div>
                     </div>
                 {% endfor %}
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>

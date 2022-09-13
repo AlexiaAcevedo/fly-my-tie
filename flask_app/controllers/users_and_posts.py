@@ -18,15 +18,6 @@ def login():
 def signup():
     return render_template('signup.html')
 
-# @app.route('/finish/account/setup')
-# def signup_continued():
-#     if 'user_id' not in session:
-#         return redirect('/logout')
-#     data = {
-#         "id": session['user_id']
-#     }
-#     return render_template('account_setup.html', user = User.get_by_id(data))
-
 @app.route('/home')
 def home():
     if 'user_id' not in session:
@@ -197,3 +188,15 @@ def edit_user_post(id):
     }
     Post.update_post(data)
     return redirect(f'/post/{id}')
+
+@app.route('/post/<int:id>/favorite', methods = ['POST'])
+def favorite_post(id):
+    if 'user_id' not in session:
+        return redirect('/logout')
+    pass
+
+@app.route('/post/<int:id>/unfavorite', methods = ['POST'])
+def unfavorite_post(id):
+    if 'user_id' not in session:
+        return redirect('/logout')
+    pass

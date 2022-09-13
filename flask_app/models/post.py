@@ -21,6 +21,9 @@ class Post:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.user = None
+        self.creator = None
+        self.user_ids_who_favorited = []
+        self.users_who_favorited = []
 
     @classmethod
     def save_post(cls, data):
@@ -95,6 +98,69 @@ class Post:
             post_creator = user.User(this_user_dictionary)
             one_post.user = post_creator
             return one_post
+
+    @classmethod
+    def get_all_likes(cls):
+        query = '''SELECT * FROM posts
+                JOIN users AS creators ON posts.user_id = creators.id
+                LEFT JOIN favorites ON favorites.posts_id = posts.id
+                LEFT JOIN users AS users_who_favorited ON favorites.users_id = users_who_favorited.id;'''
+        results = connectToMySQL('tie_my_fly').query_db(query)
+        posts = []
+        for row in results:
+            new_post = True
+            user_who_favorited_data = {
+                "id": row['users_who_favorited.id'],
+                "first_name": row['users_who_favorited.first_name'],
+                "last_name": row['users_who_favorited.last_name'],
+                "username": row['users_who_favorited.username'],
+                "email": row['users_who_favorited.email'],
+                "password": row['users_who_favorited.password'],
+                "profile_photo_url": row['users_who_favorited.profile_photo_url'],
+                "bio": row['users_who_favorited.bio'],
+                "created_at": row['users_who_favorited.created_at'],
+                "updated_at": row['users_who_favorited.updated_at']
+            }
+            # check to see if previously processed post belongs to the same as current row
+            number_of_posts = len(posts)
+            # we have processed a row already
+            if number_of_posts > 0:
+                # check to see if the last post is the same as the current row
+                last_post = posts[number_of_posts - 1]
+                if last_post.id == row['id']:
+                    last_post.user_ids_who_favorited.append(row['users_who_favorited.id'])
+                    last_post.users_who_favorited.append(user.User(user_who_favorited_data))
+                    new_post = False
+            # create new post object if post has not been created and added to the list
+            if new_post:
+
+                # create a post object
+                post = cls(row)
+                # create a user object
+                user_data = {
+                    "id": row['creators.id'],
+                    "first_name": row['first_name'],
+                    "last_name": row['last_name'],
+                    "username": row['username'],
+                    "email": row['email'],
+                    "password": row['password'],
+                    "profile_photo_url": row['profile_photo_url'],
+                    "bio": row['bio'],
+                    "created_at": row['creators.created_at'],
+                    "updated_at": row['creators.updated_at']
+                }
+                creator = user.User(user_data)
+                # associate user to the user's post
+                post.creator = creator
+                #check to see if any user liked this post
+                if row['users_who_favorited.id']:
+                    post.user_ids_who_favorited.append(row['users_who_favorited.id'])
+                    post.users_who_favorited.append(user.User(user_who_favorited_data))
+                # add post object to list of posts
+                posts.append(post)
+            return posts
+
+
 
     @staticmethod
     def validate_post(post):
